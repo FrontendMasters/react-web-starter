@@ -7,22 +7,40 @@ export class Todo extends Component {
       todos: [],
       newTodo: ''
     }
-  }
-  handleClick(e) {
-    const todos = [...this.state.todos, this.state.newTodo];
-    this.setState({todos, newTodo: ''});
+    
   }
   
-  handleChange(e) {
-    this.setState({newTodo: e.target.value})
+  handleChange = (e) => {
+    const {value} = e.target;
+    this.setState({newTodo: value});
+  }
+  
+  handleClick(e) {
+    e.preventDefault();
+    const todos = [...this.state.todos, this.input.value];
+    this.input.value = '';
+    this.setState({todos});
+  }
+  
+  removeTodo(i) {
+    const todos = [...this.state.todos.slice(0, i), this.state.todos.slice(i + 1)];
+    this.setState({todos});
   }
   
   render() {
     return(
       <div>
-        <input type="text" value={this.state.newTodo} onChange={this.handleChange.bind(this)}/>
-        <button onClick={this.handleClick.bind(this)}>click</button>
-        {this.state.todos.map(todo => (<div>{todo}</div>))}
+        <form>
+          <input
+            ref={node => this.input = node}
+            type="text" placeholder="new todo"/>
+          <button onClick={this.handleClick.bind(this)}>create</button>
+        </form>
+        <ul>
+          {this.state.todos.map((todo, i) => (
+            <li onClick={() => this.removeTodo.call(this, i)}>{todo}</li>
+          ))}
+        </ul>
       </div>
     );
   }
