@@ -4,27 +4,29 @@ export class Todo extends Component {
   constructor () {
     super();
     this.state = {
-      tasks: [],
-      value: ''
+      todos: [],
+      newTodo: ''
     }
   }
 
   handleChange (e) {
-    this.setState({value: e.target.value});
+    const { value } = e.target;
+    this.setState({newTodo: value});
   }
 
-  handleClick () {
-    const tasks = [...this.state.tasks, this.state.value];
-    this.setState({tasks});
+  handleClick (e) {
+    e.preventDefault();
+    const todos = [...this.state.todos, this.state.newTodo];
+    this.setState({todos, newTodo: ''});
   }
 
   render () {
     return (
       <div>
-        <input type="text" value={this.state.value} onChange={this.handleChange.bind(this)} />
-        <button onClick={this.handleClick.bind(this)}>Add Task</button>
+        <input type="text" placeholder="new todo" value={this.state.newTodo} onChange={this.handleChange.bind(this)} />
+        <button onClick={this.handleClick.bind(this)}>Add Todo</button>
         <ul>
-          {this.state.tasks.map(task => (<li key={task}>{task}</li>))}
+          {this.state.todos.map(todo => <li>{todo}</li>)}
         </ul>
       </div>
     );
