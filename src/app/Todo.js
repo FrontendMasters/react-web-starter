@@ -1,29 +1,40 @@
 import React, { Component } from 'react';
 
-const nums = [1,2,3,4]
 
 export class Todo extends Component {
 
   constructor() {
     super();
     this.state = {
-      nums: [1,2,3,4]
+      todos: [],
+      newTodo: ''
     }
   }
 
-  handleClick(e) {
-    const nums = [...this.state.nums, 6];
-
-    this.setState({nums})
+  handleChange(e) {
+    const {value} = e.target;
+    this.setState({newTodo: value});
   }
+ 
+  handleClick(e) {
+    e.preventDefault();
+    const todos = [...this.state.todos, this.state.newTodo];
+    this.setState({todos, newTodo: ''});
+  }
+
+
 
   render() {
     return(
-      <div>
-        <input type="text" />
-        <button onClick={this.handleClick.bind(this)}>Click</button>
-        {this.state.nums.map(num => (<h3 key={num}>{num}</h3>))}
-      </div>
+     <div>
+       <form>
+        <input onChange={this.handleChange.bind(this)} value={this.state.newTodo} type="text" placeholder="new todo"/>
+        <button onClick={this.handleClick.bind(this)}>create</button>
+       </form>
+       <ul>
+        {this.state.todos.map(todo => <li>{todo}</li>)}
+       </ul>
+     </div>
     );
   }
 }
